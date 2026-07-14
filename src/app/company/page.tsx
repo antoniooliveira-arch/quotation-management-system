@@ -1,5 +1,7 @@
 import { getCompany, saveCompany } from "./actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function CompanyPage() {
   const company = await getCompany();
 

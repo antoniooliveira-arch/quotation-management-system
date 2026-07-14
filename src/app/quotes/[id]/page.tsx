@@ -5,6 +5,8 @@ import { ptBR } from "date-fns/locale";
 import { notFound } from "next/navigation";
 import { QuoteHeader } from "./QuoteHeader";
 
+export const dynamic = "force-dynamic";
+
 export default async function QuoteDetailPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const quote = await getQuoteDetail(parseInt(params.id));

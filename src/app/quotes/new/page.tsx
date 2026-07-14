@@ -1,6 +1,8 @@
 import { getClients } from "@/app/clients/actions";
 import NewQuoteForm from "./NewQuoteForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewQuotePage() {
   const clients = await getClients();
 

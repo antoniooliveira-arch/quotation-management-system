@@ -5,6 +5,8 @@ import { formatCurrency } from "@/lib/utils";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
+export const dynamic = "force-dynamic";
+
 export default async function QuotesPage() {
   const quotesList = await getQuotes();
 
