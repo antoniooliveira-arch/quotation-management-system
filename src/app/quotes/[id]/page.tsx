@@ -15,7 +15,7 @@ export default async function QuoteDetailPage(props: { params: Promise<{ id: str
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <QuoteHeader />
+      <QuoteHeader quote={quote} />
 
       <div className="bg-white p-12 rounded-xl shadow-sm border border-slate-200 print:shadow-none print:border-none print:p-0">
         {/* Header */}

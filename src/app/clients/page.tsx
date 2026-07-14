@@ -1,8 +1,40 @@
-import { getClients, saveClient } from "./actions";
-import { Plus, User } from "lucide-react";
+"use client";
 
-export default async function ClientsPage() {
-  const clientsList = await getClients();
+import { useState } from "react";
+import { getClients, saveClient } from "./actions";
+import { Plus, User, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { use } from "react";
+
+type Client = {
+  id: number;
+  name: string;
+  phone: string;
+  city: string;
+  neighborhood: string;
+  address: string;
+  cep: string;
+  createdAt: Date;
+};
+
+export default function ClientsPage({ clientsPromise }: { clientsPromise: Promise<Client[]> }) {
+  const clientsList = use(clientsPromise);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  async function handleSubmit(formData: FormData) {
+    setIsSubmitting(true);
+    setMessage(null);
+    try {
+      await saveClient(formData);
+      setMessage({ type: "success", text: "Cliente cadastrado com sucesso!" });
+      const form = document.getElementById("client-form") as HTMLFormElement;
+      form?.reset();
+    } catch (err) {
+      setMessage({ type: "error", text: "Erro ao cadastrar cliente. Verifique o banco de dados." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div className="p-8">
@@ -19,7 +51,15 @@ export default async function ClientsPage() {
             <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <Plus className="w-5 h-5" /> Novo Cliente
             </h2>
-            <form action={saveClient} className="space-y-4">
+
+            {message && (
+              <div className={`mb-4 p-3 rounded-md flex items-center gap-2 text-sm ${message.type === "success" ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700 border border-red-200"}`}>
+                {message.type === "success" ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+                {message.text}
+              </div>
+            )}
+
+            <form id="client-form" action={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700">Nome Completo</label>
                 <input
@@ -80,9 +120,10 @@ export default async function ClientsPage() {
               </div>
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold"
+                disabled={isSubmitting}
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-semibold flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                Cadastrar Cliente
+                {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Cadastrando...</> : "Cadastrar Cliente"}
               </button>
             </form>
           </div>
