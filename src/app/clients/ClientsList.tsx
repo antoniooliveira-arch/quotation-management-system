@@ -13,7 +13,7 @@ type Client = {
   neighborhood: string;
   address: string;
   cep: string;
-  createdAt: Date;
+  created_at: string;
 };
 
 export function ClientsList({ initialClients }: { initialClients: Client[] }) {
