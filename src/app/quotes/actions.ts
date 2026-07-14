@@ -11,7 +11,7 @@ export type Quote = {
   status: string;
   total_amount: string;
   created_at: string;
-  clients?: { name: string; phone: string };
+  clients?: { name: string; phone: string; address: string; neighborhood: string; city: string; cep: string };
   companies?: { name: string; cnpj: string; address: string; cep: string; city: string; email: string; phone: string };
   quote_items?: { id: number; description: string; quantity: string; unit_price: string; total_price: string }[];
 };
