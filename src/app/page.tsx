@@ -5,6 +5,8 @@ import Link from "next/link";
 import { FileText, Users, Building2, Plus, ArrowRight } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const [quotesCount] = await db.select({ value: count() }).from(quotes);
   const [clientsCount] = await db.select({ value: count() }).from(clients);
