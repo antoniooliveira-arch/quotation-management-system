@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function getQuotes() {
+  if (!db) return [];
   return await db.query.quotes.findMany({
     with: {
       client: true,
@@ -19,6 +20,8 @@ export async function createQuote(data: {
   clientId: number;
   items: { description: string; quantity: number; unitPrice: number }[];
 }) {
+  if (!db) throw new Error("Banco de dados não configurado.");
+
   const company = await db.query.companies.findFirst();
   if (!company) {
     throw new Error("Cadastre os dados da empresa primeiro.");
@@ -47,6 +50,7 @@ export async function createQuote(data: {
 }
 
 export async function getQuoteDetail(id: number) {
+  if (!db) return null;
   return await db.query.quotes.findFirst({
     where: eq(quotes.id, id),
     with: {

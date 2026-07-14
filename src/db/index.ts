@@ -1,33 +1,31 @@
 import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool, PoolConfig } from "pg";
+import { Pool } from "pg";
 import * as schema from "./schema";
 
 const databaseUrl = process.env.DATABASE_URL;
 
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL is required");
+function createPool() {
+  if (!databaseUrl) return null;
+  const url = new URL(databaseUrl);
+  return new Pool({
+    host: url.hostname,
+    port: parseInt(url.port || "5432"),
+    user: decodeURIComponent(url.username),
+    password: decodeURIComponent(url.password),
+    database: url.pathname.replace(/^\//, ""),
+    ssl: { rejectUnauthorized: false },
+  });
 }
 
-const url = new URL(databaseUrl);
-
-const config: PoolConfig = {
-  host: url.hostname,
-  port: parseInt(url.port || "5432"),
-  user: url.username,
-  password: url.password,
-  database: url.pathname.slice(1),
-  ssl: { rejectUnauthorized: false },
-};
-(config as Record<string, unknown>).family = 4;
-
 const globalForDb = globalThis as typeof globalThis & {
-  __arenaNextJsPostgresqlPool?: Pool;
+  __arenaNextJsPostgresqlPool?: Pool | null;
 };
 
-export const pool = globalForDb.__arenaNextJsPostgresqlPool ?? new Pool(config);
+const pool = globalForDb.__arenaNextJsPostgresqlPool ?? createPool();
 
 if (process.env.NODE_ENV !== "production") {
   globalForDb.__arenaNextJsPostgresqlPool = pool;
 }
 
-export const db = drizzle(pool, { schema });
+export { pool };
+export const db = pool ? drizzle(pool, { schema }) : null;

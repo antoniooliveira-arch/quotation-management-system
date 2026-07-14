@@ -8,10 +8,20 @@ import { formatCurrency } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const [quotesCount] = await db.select({ value: count() }).from(quotes);
-  const [clientsCount] = await db.select({ value: count() }).from(clients);
-  const [totalValue] = await db.select({ value: sum(quotes.totalAmount) }).from(quotes);
-  const company = await db.query.companies.findFirst();
+  let quotesCount = { value: 0 };
+  let clientsCount = { value: 0 };
+  let totalValue = { value: 0 };
+  let company = null;
+
+  if (db) {
+    const [qc] = await db.select({ value: count() }).from(quotes);
+    const [cc] = await db.select({ value: count() }).from(clients);
+    const [tv] = await db.select({ value: sum(quotes.totalAmount) }).from(quotes);
+    company = await db.query.companies.findFirst();
+    quotesCount = qc;
+    clientsCount = cc;
+    totalValue = tv;
+  }
 
   const stats = [
     { name: "Total de Orçamentos", value: quotesCount.value, icon: FileText, color: "text-blue-600", bg: "bg-blue-100" },

@@ -6,10 +6,13 @@ import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function getClients() {
+  if (!db) return [];
   return await db.select().from(clients).orderBy(desc(clients.createdAt));
 }
 
 export async function saveClient(formData: FormData) {
+  if (!db) throw new Error("Banco de dados não configurado.");
+
   const id = formData.get("id") as string | null;
   const name = formData.get("name") as string;
   const address = formData.get("address") as string;
@@ -32,6 +35,7 @@ export async function saveClient(formData: FormData) {
 }
 
 export async function deleteClient(id: number) {
+  if (!db) return;
   await db.delete(clients).where(eq(clients.id, id));
   revalidatePath("/clients");
 }

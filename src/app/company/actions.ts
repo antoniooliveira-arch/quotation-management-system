@@ -6,6 +6,8 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function saveCompany(formData: FormData) {
+  if (!db) throw new Error("Banco de dados não configurado.");
+
   const id = formData.get("id") as string | null;
   const name = formData.get("name") as string;
   const cnpj = formData.get("cnpj") as string;
@@ -29,6 +31,7 @@ export async function saveCompany(formData: FormData) {
 }
 
 export async function getCompany() {
+  if (!db) return null;
   const result = await db.select().from(companies).limit(1);
   return result[0] || null;
 }
