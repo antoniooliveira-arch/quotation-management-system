@@ -15,43 +15,44 @@ export default async function QuoteDetailPage(props: { params: Promise<{ id: str
     notFound();
   }
 
+  const company = quote.companies!;
+  const client = quote.clients!;
+  const items = quote.quote_items || [];
+
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <QuoteHeader quote={quote} />
 
       <div className="bg-white p-12 rounded-xl shadow-sm border border-slate-200 print:shadow-none print:border-none print:p-0">
-        {/* Header */}
         <div className="flex justify-between items-start border-b-2 border-slate-100 pb-8 mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-blue-600">{quote.company.name}</h1>
-            <p className="text-sm text-slate-500">CNPJ: {quote.company.cnpj}</p>
-            <p className="text-sm text-slate-500">{quote.company.address}, {quote.company.cep}</p>
-            <p className="text-sm text-slate-500">{quote.company.city}</p>
-            <p className="text-sm text-slate-500">{quote.company.email} | {quote.company.phone}</p>
+            <h1 className="text-2xl font-bold text-blue-600">{company.name}</h1>
+            <p className="text-sm text-slate-500">CNPJ: {company.cnpj}</p>
+            <p className="text-sm text-slate-500">{company.address}, {company.cep}</p>
+            <p className="text-sm text-slate-500">{company.city}</p>
+            <p className="text-sm text-slate-500">{company.email} | {company.phone}</p>
           </div>
           <div className="text-right">
             <h2 className="text-3xl font-black text-slate-300 uppercase tracking-tighter">Orçamento</h2>
             <p className="text-slate-500">Nº {quote.id.toString().padStart(4, '0')}</p>
-            <p className="text-slate-500">{format(new Date(quote.createdAt), "dd/MM/yyyy")}</p>
+            <p className="text-slate-500">{format(new Date(quote.created_at), "dd/MM/yyyy")}</p>
           </div>
         </div>
 
-        {/* Client Info */}
         <div className="grid grid-cols-2 gap-8 mb-12">
           <div className="bg-slate-50 p-4 rounded-lg">
             <h3 className="text-xs font-bold text-slate-400 uppercase mb-2">Cliente</h3>
-            <p className="font-bold text-slate-900">{quote.client.name}</p>
-            <p className="text-sm text-slate-600">{quote.client.phone}</p>
+            <p className="font-bold text-slate-900">{client.name}</p>
+            <p className="text-sm text-slate-600">{client.phone}</p>
           </div>
           <div className="bg-slate-50 p-4 rounded-lg">
             <h3 className="text-xs font-bold text-slate-400 uppercase mb-2">Endereço de Entrega/Serviço</h3>
-            <p className="text-sm text-slate-600">{quote.client.address}</p>
-            <p className="text-sm text-slate-600">{quote.client.neighborhood}, {quote.client.city}</p>
-            <p className="text-sm text-slate-600">CEP: {quote.client.cep}</p>
+            <p className="text-sm text-slate-600">{client.address}</p>
+            <p className="text-sm text-slate-600">{client.neighborhood}, {client.city}</p>
+            <p className="text-sm text-slate-600">CEP: {client.cep}</p>
           </div>
         </div>
 
-        {/* Items Table */}
         <table className="w-full mb-12">
           <thead>
             <tr className="border-b-2 border-slate-100 text-left">
@@ -62,28 +63,26 @@ export default async function QuoteDetailPage(props: { params: Promise<{ id: str
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
-            {quote.items.map((item) => (
+            {items.map((item) => (
               <tr key={item.id}>
                 <td className="py-4 text-slate-800">{item.description}</td>
                 <td className="py-4 text-center text-slate-600">{item.quantity}</td>
-                <td className="py-4 text-right text-slate-600">{formatCurrency(item.unitPrice)}</td>
-                <td className="py-4 text-right font-semibold text-slate-900">{formatCurrency(item.totalPrice)}</td>
+                <td className="py-4 text-right text-slate-600">{formatCurrency(item.unit_price)}</td>
+                <td className="py-4 text-right font-semibold text-slate-900">{formatCurrency(item.total_price)}</td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        {/* Summary */}
         <div className="flex justify-end mb-12">
           <div className="w-64">
             <div className="flex justify-between py-2 border-t-2 border-slate-900">
               <span className="font-bold text-slate-900 uppercase">Total do Orçamento</span>
-              <span className="font-bold text-slate-900 text-xl">{formatCurrency(quote.totalAmount)}</span>
+              <span className="font-bold text-slate-900 text-xl">{formatCurrency(quote.total_amount)}</span>
             </div>
           </div>
         </div>
 
-        {/* Footer */}
         <div className="mt-20 pt-8 border-t border-slate-100 text-center">
           <p className="font-bold" style={{ fontSize: '10pt' }}>
             AAO, contato 66-984182082

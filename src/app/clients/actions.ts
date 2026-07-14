@@ -1,17 +1,27 @@
 "use server";
 
-import { db } from "@/db";
-import { clients } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { supabase } from "@/db";
 import { revalidatePath } from "next/cache";
 
-export async function getClients() {
-  if (!db) return [];
-  return await db.select().from(clients).orderBy(desc(clients.createdAt));
+export type Client = {
+  id: number;
+  name: string;
+  address: string;
+  cep: string;
+  city: string;
+  neighborhood: string;
+  phone: string;
+  created_at: string;
+};
+
+export async function getClients(): Promise<Client[]> {
+  if (!supabase) return [];
+  const { data } = await supabase.from("clients").select("*").order("created_at", { ascending: false });
+  return (data as Client[]) || [];
 }
 
 export async function saveClient(formData: FormData) {
-  if (!db) throw new Error("Banco de dados não configurado.");
+  if (!supabase) throw new Error("Banco de dados não configurado.");
 
   const id = formData.get("id") as string | null;
   const name = formData.get("name") as string;
@@ -22,20 +32,16 @@ export async function saveClient(formData: FormData) {
   const phone = formData.get("phone") as string;
 
   if (id) {
-    await db.update(clients).set({
-      name, address, cep, city, neighborhood, phone
-    }).where(eq(clients.id, parseInt(id)));
+    await supabase.from("clients").update({ name, address, cep, city, neighborhood, phone }).eq("id", parseInt(id));
   } else {
-    await db.insert(clients).values({
-      name, address, cep, city, neighborhood, phone
-    });
+    await supabase.from("clients").insert({ name, address, cep, city, neighborhood, phone });
   }
 
   revalidatePath("/clients");
 }
 
 export async function deleteClient(id: number) {
-  if (!db) return;
-  await db.delete(clients).where(eq(clients.id, id));
+  if (!supabase) return;
+  await supabase.from("clients").delete().eq("id", id);
   revalidatePath("/clients");
 }

@@ -7,9 +7,9 @@ import { generateQuotePDF } from "@/lib/generate-pdf";
 type QuoteHeaderProps = {
   quote: {
     id: number;
-    createdAt: Date;
-    totalAmount: string | number;
-    company: {
+    created_at: string;
+    total_amount: string | number;
+    companies?: {
       name: string;
       cnpj: string;
       address: string;
@@ -18,7 +18,7 @@ type QuoteHeaderProps = {
       email: string;
       phone: string;
     };
-    client: {
+    clients?: {
       name: string;
       phone: string;
       address: string;
@@ -26,11 +26,11 @@ type QuoteHeaderProps = {
       city: string;
       cep: string;
     };
-    items: {
+    quote_items?: {
       description: string;
       quantity: string | number;
-      unitPrice: string | number;
-      totalPrice: string | number;
+      unit_price: string | number;
+      total_price: string | number;
     }[];
   };
 };
@@ -43,7 +43,22 @@ export function QuoteHeader({ quote }: QuoteHeaderProps) {
       </Link>
       <div className="flex gap-2">
         <button
-          onClick={() => generateQuotePDF(quote)}
+          onClick={() => {
+            if (!quote.companies || !quote.clients || !quote.quote_items) return;
+            generateQuotePDF({
+              id: quote.id,
+              createdAt: new Date(quote.created_at),
+              totalAmount: quote.total_amount,
+              company: quote.companies,
+              client: quote.clients,
+              items: quote.quote_items.map(i => ({
+                description: i.description,
+                quantity: i.quantity,
+                unitPrice: i.unit_price,
+                totalPrice: i.total_price,
+              })),
+            });
+          }}
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
         >
           <Download className="w-5 h-5" /> Baixar PDF

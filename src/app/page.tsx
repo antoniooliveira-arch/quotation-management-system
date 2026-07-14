@@ -1,6 +1,4 @@
-import { db } from "@/db";
-import { quotes, clients, companies } from "@/db/schema";
-import { count, sum } from "drizzle-orm";
+import { supabase } from "@/db";
 import Link from "next/link";
 import { FileText, Users, Building2, Plus, ArrowRight } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
@@ -8,25 +6,26 @@ import { formatCurrency } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  let quotesCount: { value: number } = { value: 0 };
-  let clientsCount: { value: number } = { value: 0 };
-  let totalValue: { value: string | null } = { value: null };
+  let quotesCount = 0;
+  let clientsCount = 0;
+  let totalValue = 0;
   let company = null;
 
-  if (db) {
-    const [qc] = await db.select({ value: count() }).from(quotes);
-    const [cc] = await db.select({ value: count() }).from(clients);
-    const [tv] = await db.select({ value: sum(quotes.totalAmount) }).from(quotes);
-    company = await db.query.companies.findFirst();
-    quotesCount = qc;
-    clientsCount = cc;
-    totalValue = tv;
+  if (supabase) {
+    const { count: qc } = await supabase.from("quotes").select("*", { count: "exact", head: true });
+    const { count: cc } = await supabase.from("clients").select("*", { count: "exact", head: true });
+    const { data: totals } = await supabase.from("quotes").select("total_amount");
+    const { data: comp } = await supabase.from("companies").select("*").limit(1).single();
+    quotesCount = qc || 0;
+    clientsCount = cc || 0;
+    totalValue = totals?.reduce((acc: number, t: { total_amount: string }) => acc + parseFloat(t.total_amount || "0"), 0) || 0;
+    company = comp;
   }
 
   const stats = [
-    { name: "Total de Orçamentos", value: quotesCount.value, icon: FileText, color: "text-blue-600", bg: "bg-blue-100" },
-    { name: "Clientes Cadastrados", value: clientsCount.value, icon: Users, color: "text-green-600", bg: "bg-green-100" },
-    { name: "Valor Total Gerado", value: formatCurrency(totalValue.value || "0"), icon: Building2, color: "text-purple-600", bg: "bg-purple-100" },
+    { name: "Total de Orçamentos", value: quotesCount, icon: FileText, color: "text-blue-600", bg: "bg-blue-100" },
+    { name: "Clientes Cadastrados", value: clientsCount, icon: Users, color: "text-green-600", bg: "bg-green-100" },
+    { name: "Valor Total Gerado", value: formatCurrency(totalValue), icon: Building2, color: "text-purple-600", bg: "bg-purple-100" },
   ];
 
   return (

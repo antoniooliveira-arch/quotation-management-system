@@ -1,6 +1,6 @@
 import { getQuotes } from "./actions";
 import Link from "next/link";
-import { Plus, FileText, ChevronRight } from "lucide-react";
+import { Plus, ChevronRight } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -41,13 +41,13 @@ export default async function QuotesPage() {
               <tr key={quote.id} className="hover:bg-slate-50 transition-colors">
                 <td className="px-6 py-4 font-mono text-sm text-slate-500">#{quote.id.toString().padStart(4, '0')}</td>
                 <td className="px-6 py-4">
-                  <span className="font-medium text-slate-900">{quote.client.name}</span>
+                  <span className="font-medium text-slate-900">{quote.clients?.name}</span>
                 </td>
                 <td className="px-6 py-4 text-slate-600">
-                  {format(new Date(quote.createdAt), "dd 'de' MMM, yyyy", { locale: ptBR })}
+                  {format(new Date(quote.created_at), "dd 'de' MMM, yyyy", { locale: ptBR })}
                 </td>
                 <td className="px-6 py-4 font-semibold text-slate-900">
-                  {formatCurrency(quote.totalAmount)}
+                  {formatCurrency(quote.total_amount)}
                 </td>
                 <td className="px-6 py-4">
                   <Link

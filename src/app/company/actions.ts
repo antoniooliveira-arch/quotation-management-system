@@ -1,12 +1,22 @@
 "use server";
 
-import { db } from "@/db";
-import { companies } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { supabase } from "@/db";
 import { revalidatePath } from "next/cache";
 
+export type Company = {
+  id: number;
+  name: string;
+  cnpj: string;
+  address: string;
+  cep: string;
+  city: string;
+  email: string;
+  phone: string;
+  created_at: string;
+};
+
 export async function saveCompany(formData: FormData) {
-  if (!db) throw new Error("Banco de dados não configurado.");
+  if (!supabase) throw new Error("Banco de dados não configurado.");
 
   const id = formData.get("id") as string | null;
   const name = formData.get("name") as string;
@@ -18,20 +28,16 @@ export async function saveCompany(formData: FormData) {
   const phone = formData.get("phone") as string;
 
   if (id) {
-    await db.update(companies).set({
-      name, cnpj, address, cep, city, email, phone
-    }).where(eq(companies.id, parseInt(id)));
+    await supabase.from("companies").update({ name, cnpj, address, cep, city, email, phone }).eq("id", parseInt(id));
   } else {
-    await db.insert(companies).values({
-      name, cnpj, address, cep, city, email, phone
-    });
+    await supabase.from("companies").insert({ name, cnpj, address, cep, city, email, phone });
   }
 
   revalidatePath("/company");
 }
 
-export async function getCompany() {
-  if (!db) return null;
-  const result = await db.select().from(companies).limit(1);
-  return result[0] || null;
+export async function getCompany(): Promise<Company | null> {
+  if (!supabase) return null;
+  const { data } = await supabase.from("companies").select("*").limit(1).single();
+  return (data as Company) || null;
 }
