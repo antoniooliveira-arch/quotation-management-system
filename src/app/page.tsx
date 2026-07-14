@@ -8,9 +8,9 @@ import { formatCurrency } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  let quotesCount = { value: 0 };
-  let clientsCount = { value: 0 };
-  let totalValue = { value: 0 };
+  let quotesCount: { value: number } = { value: 0 };
+  let clientsCount: { value: number } = { value: 0 };
+  let totalValue: { value: string | null } = { value: null };
   let company = null;
 
   if (db) {
@@ -26,7 +26,7 @@ export default async function DashboardPage() {
   const stats = [
     { name: "Total de Orçamentos", value: quotesCount.value, icon: FileText, color: "text-blue-600", bg: "bg-blue-100" },
     { name: "Clientes Cadastrados", value: clientsCount.value, icon: Users, color: "text-green-600", bg: "bg-green-100" },
-    { name: "Valor Total Gerado", value: formatCurrency(totalValue.value || 0), icon: Building2, color: "text-purple-600", bg: "bg-purple-100" },
+    { name: "Valor Total Gerado", value: formatCurrency(totalValue.value || "0"), icon: Building2, color: "text-purple-600", bg: "bg-purple-100" },
   ];
 
   return (
