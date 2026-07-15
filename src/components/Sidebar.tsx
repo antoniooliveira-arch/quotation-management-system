@@ -76,12 +76,7 @@ export function Sidebar() {
         </nav>
         <div className="px-4 pb-4">
           <button
-            onClick={() => {
-              window.close();
-              setTimeout(() => {
-                window.location.href = "about:blank";
-              }, 200);
-            }}
+            onClick={() => window.close()}
             className="flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors text-red-400 hover:bg-slate-800 hover:text-red-300 w-full"
           >
             <LogOut className="w-5 h-5" />
