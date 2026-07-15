@@ -60,8 +60,8 @@ export default function NewQuoteForm({ clients }: { clients: Client[] }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+    <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 max-w-4xl">
+      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
         <h2 className="text-lg font-semibold mb-4">Dados do Cliente</h2>
         <div>
           <label className="block text-sm font-medium text-slate-700">Selecione o Cliente</label>
@@ -79,13 +79,13 @@ export default function NewQuoteForm({ clients }: { clients: Client[] }) {
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Itens do Orçamento (Produtos/Serviços)</h2>
+      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
+          <h2 className="text-lg font-semibold">Itens do Orçamento</h2>
           <button
             type="button"
             onClick={addItem}
-            className="flex items-center gap-2 text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg hover:bg-blue-100 transition-colors"
+            className="flex items-center justify-center gap-2 text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg hover:bg-blue-100 transition-colors shrink-0"
           >
             <Plus className="w-4 h-4" /> Adicionar Item
           </button>
@@ -93,51 +93,53 @@ export default function NewQuoteForm({ clients }: { clients: Client[] }) {
 
         <div className="space-y-4">
           {items.map((item, index) => (
-            <div key={index} className="grid grid-cols-12 gap-4 items-end border-b border-slate-100 pb-4">
-              <div className="col-span-6">
-                <label className="block text-xs font-medium text-slate-500 uppercase">Descrição</label>
-                <input
-                  type="text"
-                  value={item.description}
-                  onChange={(e) => updateItem(index, "description", e.target.value)}
-                  className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border"
-                  placeholder="Ex: Instalação de Ar Condicionado"
-                  required
-                />
-              </div>
-              <div className="col-span-2">
-                <label className="block text-xs font-medium text-slate-500 uppercase">Qtd</label>
-                <input
-                  type="number"
-                  value={item.quantity}
-                  onChange={(e) => updateItem(index, "quantity", parseFloat(e.target.value))}
-                  className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border"
-                  min="0.01"
-                  step="0.01"
-                  required
-                />
-              </div>
-              <div className="col-span-3">
-                <label className="block text-xs font-medium text-slate-500 uppercase">Preço Unit.</label>
-                <input
-                  type="number"
-                  value={item.unitPrice}
-                  onChange={(e) => updateItem(index, "unitPrice", parseFloat(e.target.value))}
-                  className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border"
-                  min="0"
-                  step="0.01"
-                  required
-                />
-              </div>
-              <div className="col-span-1">
-                <button
-                  type="button"
-                  onClick={() => removeItem(index)}
-                  className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                  disabled={items.length === 1}
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
+            <div key={index} className="border-b border-slate-100 pb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4 items-end">
+                <div className="sm:col-span-6">
+                  <label className="block text-xs font-medium text-slate-500 uppercase">Descrição</label>
+                  <input
+                    type="text"
+                    value={item.description}
+                    onChange={(e) => updateItem(index, "description", e.target.value)}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border"
+                    placeholder="Ex: Instalação de Ar Condicionado"
+                    required
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-medium text-slate-500 uppercase">Qtd</label>
+                  <input
+                    type="number"
+                    value={item.quantity}
+                    onChange={(e) => updateItem(index, "quantity", parseFloat(e.target.value))}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border"
+                    min="0.01"
+                    step="0.01"
+                    required
+                  />
+                </div>
+                <div className="sm:col-span-3">
+                  <label className="block text-xs font-medium text-slate-500 uppercase">Preço Unit.</label>
+                  <input
+                    type="number"
+                    value={item.unitPrice}
+                    onChange={(e) => updateItem(index, "unitPrice", parseFloat(e.target.value))}
+                    className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border"
+                    min="0"
+                    step="0.01"
+                    required
+                  />
+                </div>
+                <div className="sm:col-span-1 flex justify-end sm:justify-center">
+                  <button
+                    type="button"
+                    onClick={() => removeItem(index)}
+                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    disabled={items.length === 1}
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -146,16 +148,16 @@ export default function NewQuoteForm({ clients }: { clients: Client[] }) {
         <div className="mt-6 flex justify-end">
           <div className="text-right">
             <p className="text-sm text-slate-500 uppercase font-semibold">Total Geral</p>
-            <p className="text-3xl font-bold text-slate-900">{formatCurrency(total)}</p>
+            <p className="text-2xl sm:text-3xl font-bold text-slate-900">{formatCurrency(total)}</p>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end">
         <button
           type="submit"
           disabled={isSubmitting}
-          className="flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 disabled:opacity-50"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 text-white px-6 sm:px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 disabled:opacity-50"
         >
           <Save className="w-5 h-5" />
           {isSubmitting ? "Salvando..." : "Gerar Orçamento"}

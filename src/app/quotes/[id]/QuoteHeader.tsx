@@ -37,11 +37,11 @@ type QuoteHeaderProps = {
 
 export function QuoteHeader({ quote }: QuoteHeaderProps) {
   return (
-    <div className="flex justify-between items-center mb-8 no-print">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 md:mb-8 no-print">
       <Link href="/quotes" className="flex items-center gap-2 text-slate-500 hover:text-slate-700">
         <ArrowLeft className="w-4 h-4" /> Voltar
       </Link>
-      <div className="flex gap-2">
+      <div className="flex gap-2 w-full sm:w-auto">
         <button
           onClick={() => {
             if (!quote.companies || !quote.clients || !quote.quote_items) return;
@@ -59,13 +59,13 @@ export function QuoteHeader({ quote }: QuoteHeaderProps) {
               })),
             });
           }}
-          className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
         >
-          <Download className="w-5 h-5" /> Baixar PDF
+          <Download className="w-5 h-5" /> <span className="hidden xs:inline">Baixar </span>PDF
         </button>
         <button
           onClick={() => window.print()}
-          className="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-lg font-semibold hover:bg-slate-800 transition-colors"
+          className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-lg font-semibold hover:bg-slate-800 transition-colors"
         >
           <Printer className="w-5 h-5" /> Imprimir
         </button>

@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Arena Next.js PostgreSQL Starter",
-  description: "Starter template with Next.js, Drizzle, and PostgreSQL.",
+  title: "AAO Orçamentos",
+  description: "Sistema de gerenciamento de orçamentos AAO.",
 };
 
 import { Sidebar } from "@/components/Sidebar";
@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="pt-BR">
       <body className="bg-slate-100 text-slate-900 antialiased flex min-h-screen">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto min-w-0">
           {children}
         </main>
       </body>

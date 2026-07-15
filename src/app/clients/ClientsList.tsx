@@ -38,8 +38,8 @@ export function ClientsList({ initialClients }: { initialClients: Client[] }) {
   }
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-      <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+    <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+      <h2 className="text-lg sm:text-xl font-semibold mb-4 flex items-center gap-2">
         <Plus className="w-5 h-5" /> Novo Cliente
       </h2>
 
@@ -60,7 +60,7 @@ export function ClientsList({ initialClients }: { initialClients: Client[] }) {
             className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border"
           />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <div>
             <label className="block text-sm font-medium text-slate-700">CEP</label>
             <input
@@ -89,7 +89,7 @@ export function ClientsList({ initialClients }: { initialClients: Client[] }) {
             className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border"
           />
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <div>
             <label className="block text-sm font-medium text-slate-700">Bairro</label>
             <input

@@ -6,17 +6,17 @@ export default async function CompanyPage() {
   const company = await getCompany();
 
   return (
-    <div className="p-8 max-w-2xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Dados da Empresa</h1>
-        <p className="text-slate-500">Configure os dados que aparecerão nos seus orçamentos.</p>
+    <div className="p-4 sm:p-6 md:p-8 max-w-2xl mx-auto">
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold">Dados da Empresa</h1>
+        <p className="text-slate-500 text-sm md:text-base">Configure os dados que aparecerão nos seus orçamentos.</p>
       </div>
 
-      <form action={saveCompany} className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+      <form action={saveCompany} className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
         {company?.id && <input type="hidden" name="id" value={company.id} />}
-        
-        <div className="grid grid-cols-2 gap-4">
-          <div className="col-span-2">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-slate-700">Nome da Empresa</label>
             <input
               type="text"
@@ -26,7 +26,7 @@ export default async function CompanyPage() {
               className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-slate-50 p-2 border"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-slate-700">CNPJ</label>
             <input
@@ -49,7 +49,7 @@ export default async function CompanyPage() {
             />
           </div>
 
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-slate-700">Endereço</label>
             <input
               type="text"
@@ -82,7 +82,7 @@ export default async function CompanyPage() {
             />
           </div>
 
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-slate-700">Email</label>
             <input
               type="email"
