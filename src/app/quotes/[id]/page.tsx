@@ -86,6 +86,12 @@ export default async function QuoteDetailPage(props: { params: Promise<{ id: str
         </div>
       </div>
 
+      <div className="mt-12 sm:mt-20 pt-6 sm:pt-8 text-center">
+        <p className="text-slate-500" style={{ fontSize: '9px' }}>
+          Desenvolvido por AAO Tecnologia
+        </p>
+      </div>
+
       <style dangerouslySetInnerHTML={{ __html: `
         @media print {
           .no-print { display: none !important; }
