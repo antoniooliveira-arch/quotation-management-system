@@ -84,12 +84,6 @@ export default async function QuoteDetailPage(props: { params: Promise<{ id: str
             </div>
           </div>
         </div>
-
-        <div className="mt-12 sm:mt-20 pt-6 sm:pt-8 border-t border-slate-100 text-center">
-          <p className="font-bold" style={{ fontSize: '10pt' }}>
-            AAO, contato 66-984182082
-          </p>
-        </div>
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
