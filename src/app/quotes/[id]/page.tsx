@@ -1,5 +1,5 @@
 import { getQuoteDetail } from "../actions";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency, formatNumber } from "@/lib/utils";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { notFound } from "next/navigation";
@@ -79,8 +79,8 @@ export default async function QuoteDetailPage(props: { params: Promise<{ id: str
         <div className="flex justify-end mb-8 sm:mb-12">
           <div className="w-full sm:w-64">
             <div className="flex justify-between py-2 border-t-2 border-slate-900">
-              <span className="font-bold text-slate-900 uppercase text-sm sm:text-base">Total do Orçamento</span>
-              <span className="font-bold text-slate-900 text-lg sm:text-xl">{formatCurrency(quote.total_amount)}</span>
+              <span className="font-bold text-slate-900 uppercase text-sm sm:text-base">Total</span>
+              <span className="font-bold text-slate-900 text-lg sm:text-xl">{formatNumber(quote.total_amount)}</span>
             </div>
           </div>
         </div>

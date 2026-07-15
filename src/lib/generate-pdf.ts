@@ -38,6 +38,14 @@ function formatCurrency(value: number | string) {
   }).format(amount);
 }
 
+function formatNumber(value: number | string) {
+  const amount = typeof value === "string" ? parseFloat(value) : value;
+  return new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
 export function generateQuotePDF(quote: QuotePDFData) {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -136,9 +144,9 @@ export function generateQuotePDF(quote: QuotePDFData) {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
   doc.setTextColor(15, 23, 42);
-  doc.text("TOTAL DO ORCAMENTO", pageWidth - 14 - 60, finalY + 15);
+  doc.text("TOTAL", pageWidth - 14 - 60, finalY + 15);
   doc.setFontSize(14);
-  doc.text(formatCurrency(quote.totalAmount), pageWidth - 14, finalY + 15, { align: "right" });
+  doc.text(formatNumber(quote.totalAmount), pageWidth - 14, finalY + 15, { align: "right" });
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);

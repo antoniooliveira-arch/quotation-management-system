@@ -12,3 +12,11 @@ export function formatCurrency(value: number | string) {
     currency: "BRL",
   }).format(amount);
 }
+
+export function formatNumber(value: number | string) {
+  const amount = typeof value === "string" ? parseFloat(value) : value;
+  return new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
