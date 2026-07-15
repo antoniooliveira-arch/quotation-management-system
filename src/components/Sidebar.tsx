@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { LayoutDashboard, Users, Building2, FileText, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, Building2, FileText, Menu, X, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigation = [
@@ -66,6 +66,13 @@ export function Sidebar() {
               </Link>
             );
           })}
+          <Link
+            href="/company"
+            className="flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors text-green-400 hover:bg-slate-800 hover:text-green-300"
+          >
+            <PlusCircle className="w-5 h-5" />
+            <span>Cadastrar Empresa</span>
+          </Link>
         </nav>
         <div className="p-6 border-t border-slate-800">
           <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
