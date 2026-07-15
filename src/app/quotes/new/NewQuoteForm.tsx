@@ -48,9 +48,9 @@ export default function NewQuoteForm({ clients }: { clients: Client[] }) {
         clientId: parseInt(clientId),
         items,
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Erro ao criar orçamento. Verifique se os dados da empresa estão cadastrados.");
+      alert(error?.message || "Erro ao criar orçamento.");
     } finally {
       setIsSubmitting(false);
     }
