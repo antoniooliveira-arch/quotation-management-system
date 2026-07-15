@@ -18,10 +18,14 @@ export type Quote = {
 
 export async function getQuotes(): Promise<(Quote & { clients: { name: string } })[]> {
   if (!supabase) return [];
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("quotes")
     .select("*, clients(name)")
     .order("created_at", { ascending: false });
+  if (error) {
+    console.error("Error fetching quotes:", error);
+    return [];
+  }
   return (data as (Quote & { clients: { name: string } })[]) || [];
 }
 
@@ -31,18 +35,27 @@ export async function createQuote(data: {
 }) {
   if (!supabase) throw new Error("Banco de dados não configurado.");
 
-  const { data: company } = await supabase.from("companies").select("*").limit(1).single();
+  const { data: company, error: companyError } = await supabase.from("companies").select("*").limit(1).maybeSingle();
+  if (companyError) {
+    console.error("Error fetching company:", companyError);
+    throw new Error(`Erro ao buscar empresa: ${companyError.message}`);
+  }
   if (!company) {
     throw new Error("Cadastre os dados da empresa primeiro.");
   }
 
   const totalAmount = data.items.reduce((acc, item) => acc + item.quantity * item.unitPrice, 0);
 
-  const { data: newQuote } = await supabase
+  const { data: newQuote, error: quoteError } = await supabase
     .from("quotes")
     .insert({ client_id: data.clientId, company_id: company.id, total_amount: totalAmount.toString() })
     .select()
     .single();
+
+  if (quoteError) {
+    console.error("Error creating quote:", quoteError);
+    throw new Error(`Erro ao criar orçamento: ${quoteError.message}`);
+  }
 
   if (newQuote) {
     const items = data.items.map((item) => ({
@@ -52,7 +65,11 @@ export async function createQuote(data: {
       unit_price: item.unitPrice.toString(),
       total_price: (item.quantity * item.unitPrice).toString(),
     }));
-    await supabase.from("quote_items").insert(items);
+    const { error: itemsError } = await supabase.from("quote_items").insert(items);
+    if (itemsError) {
+      console.error("Error creating quote items:", itemsError);
+      throw new Error(`Erro ao criar itens: ${itemsError.message}`);
+    }
   }
 
   revalidatePath("/quotes");
