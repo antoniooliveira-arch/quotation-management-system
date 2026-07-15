@@ -49,6 +49,9 @@ export default function NewQuoteForm({ clients }: { clients: Client[] }) {
         items,
       });
     } catch (error: any) {
+      if (error?.message?.includes("NEXT_REDIRECT")) {
+        throw error;
+      }
       console.error(error);
       alert(error?.message || "Erro ao criar orçamento.");
     } finally {
