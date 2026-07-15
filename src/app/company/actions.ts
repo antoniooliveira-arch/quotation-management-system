@@ -36,6 +36,12 @@ export async function saveCompany(formData: FormData) {
   revalidatePath("/company");
 }
 
+export async function getCompanies(): Promise<Company[]> {
+  if (!supabase) return [];
+  const { data } = await supabase.from("companies").select("*").order("created_at", { ascending: false });
+  return (data as Company[]) || [];
+}
+
 export async function getCompany(): Promise<Company | null> {
   if (!supabase) return null;
   const { data } = await supabase.from("companies").select("*").limit(1).single();
