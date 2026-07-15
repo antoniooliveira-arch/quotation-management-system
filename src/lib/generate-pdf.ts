@@ -148,10 +148,5 @@ export function generateQuotePDF(quote: QuotePDFData) {
   doc.setFontSize(14);
   doc.text(formatNumber(quote.totalAmount), pageWidth - 14, finalY + 15, { align: "right" });
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(8);
-  doc.setTextColor(100, 100, 100);
-  doc.text("AAO, contato 66-984182082", pageWidth / 2, 280, { align: "center" });
-
   doc.save(`orcamento-${quoteNum}.pdf`);
 }
